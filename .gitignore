@@ -1,0 +1,26 @@
+node_modules/
+.env
+.env.*
+!.env.example
+output/
+*.tgz
+*.log
+.DS_Store
+*.lock.tmp
+
+# Local credentials and generated collection data, regardless of output folder.
+*.pem
+*.key
+credentials.json
+*-credentials.json
+client_secret*.json
+token*.json
+.aws/
+.ssh/
+.images/
+.collection.lock
+collection.json
+collection.xlsx
+collection.csv
+/photos/
+/images/
