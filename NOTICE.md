@@ -7,7 +7,9 @@ Why: Explains the adaptation and distinguishes project licensing from third-part
 
 # Provenance
 
-The photo recognition, catalog normalization, provider transport, research and usage-accounting logic was adapted from the owner's existing collection-recognition code.
+The photo-recognition workflow, catalog normalization, provider API transport, research and usage-accounting code was adapted from the owner's existing collection-recognition code.
+
+Classification and attribute recognition are delegated to third-party OpenAI or Google Gemini models. This repository contains application code, not a custom trained classification model or model weights.
 
 This repository includes only the standalone image-to-spreadsheet workflow and its CLI/MCP interfaces. Application-specific historical-cost reconstruction, desktop settings, storage, canvas and Google integrations are excluded.
 

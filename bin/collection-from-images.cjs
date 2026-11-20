@@ -14,12 +14,12 @@ const { buildCollection, readState } = require("../lib/collection.cjs");
 const { exportCollection } = require("../lib/spreadsheet.cjs");
 const { lockOutput } = require("../lib/files.cjs");
 
-const HELP = `CollectionFromImages — build a spreadsheet from photographs
+const HELP = `CollectionFromImages-using3rdPartyAI — build a spreadsheet from photographs
 
 Usage:
-  collection-from-images build <image-directory> [options]
-  collection-from-images export <collection.json> [--output <directory>] [--no-images]
-  collection-from-images mcp
+  collection-from-images-using3rdpartyai build <image-directory> [options]
+  collection-from-images-using3rdpartyai export <collection.json> [--output <directory>] [--no-images]
+  collection-from-images-using3rdpartyai mcp
 
 Build options:
   -o, --output <directory>   Output folder (default: ./output)
@@ -37,6 +37,7 @@ Build options:
   -h, --help                Show help
   -v, --version             Show version
 
+Classification uses hosted OpenAI or Google Gemini models; no custom model is bundled.
 Set OPENAI_API_KEY or GEMINI_API_KEY in the environment. Images are sent to
 the selected provider unless --offline is used. Research makes paid web calls.
 Attributes: edit config/collection-types.json beside the app (see README).

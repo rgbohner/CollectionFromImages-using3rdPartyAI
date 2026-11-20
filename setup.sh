@@ -4,7 +4,7 @@
 # Used for: Checks prerequisites, installs locked dependencies, creates a private local environment file and runs tests.
 # Why: Provides a repeatable development setup while preserving an existing API-key file.
 
-# Run from anywhere: /path/to/CollectionFromImages/setup.sh
+# Run from anywhere: /path/to/CollectionFromImages-using3rdPartyAI/setup.sh
 set -euo pipefail
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -39,7 +39,7 @@ if ! command -v npm >/dev/null 2>&1 || ! npm --version >/dev/null 2>&1; then
   exit 1
 fi
 
-printf 'Setting up CollectionFromImages with Node %s\n' "$(node --version)"
+printf 'Setting up CollectionFromImages-using3rdPartyAI with Node %s\n' "$(node --version)"
 npm ci --no-fund --no-audit
 
 # noclobber avoids overwriting credentials, including when setup runs twice.

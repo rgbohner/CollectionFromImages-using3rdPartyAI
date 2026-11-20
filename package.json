@@ -1,13 +1,14 @@
 {
-  "name": "collection-from-images",
+  "name": "collection-from-images-using3rdpartyai",
   "version": "1.0.0",
   "private": true,
-  "description": "Build a collection spreadsheet from a directory of photographs.",
+  "description": "Build collection spreadsheets using third-party OpenAI or Google Gemini models; no custom classifier.",
   "license": "MIT",
   "engines": {
     "node": ">=22"
   },
   "bin": {
+    "collection-from-images-using3rdpartyai": "bin/collection-from-images.cjs",
     "collection-from-images": "bin/collection-from-images.cjs"
   },
   "main": "lib/collection.cjs",

@@ -1,23 +1,29 @@
 <!--
 Author: rgbohner (with Codex assistance)
 Date: 2026-11-20
-Used for: Explains installation, customization, CLI/MCP use, development and proposed Gaussian splat research.
+Used for: Explains third-party AI classification, installation, customization, CLI/MCP use and proposed Gaussian splat research.
 Why: Lets a new user operate and customize the standalone app without its original application.
 -->
 
-# CollectionFromImages
+# CollectionFromImages-using3rdPartyAI
 
 Turn a directory of collectible photographs into an Excel workbook, CSV and editable JSON. Run it as a command-line app or an optional local MCP server. No desktop app, Google account, cloud storage, or running web server is required.
 
 The app recognizes watches, coins, comics, magazines, trading cards and other physical objects. It keeps visible evidence, uncertain fields, individual objects within a photograph, and possible duplicate-view suggestions. Optional OpenAI web research adds sourced catalog information and resale evidence.
+
+## Classification engine: third-party AI platforms
+
+**Object classification, identification and attribute extraction are performed by pretrained models hosted by OpenAI or Google Gemini through their APIs. This project does not train, fine-tune or bundle a custom classification model.**
+
+The app prepares images, sends requests to your selected provider, checks and normalizes the responses, saves progress, and generates spreadsheets. `config/collection-types.json` controls the requested attributes and output rules; editing it changes the instructions sent to the provider, not the model's weights. Optional web research currently uses OpenAI. You supply your own provider API key, and API usage is billed by that provider. Offline mode only creates filename-based inventory rows and performs no AI classification.
 
 ## Install
 
 Install **Node.js 22 or newer**, then clone this repository.
 
 ```sh
-git clone https://github.com/rgbohner/CollectionFromImages.git
-cd CollectionFromImages
+git clone https://github.com/rgbohner/CollectionFromImages-using3rdPartyAI.git
+cd CollectionFromImages-using3rdPartyAI
 npm ci
 ```
 
@@ -67,8 +73,10 @@ npm start -- build 'C:\Users\You\Pictures\Collection' --output '.\output\my-coll
 To install the command locally for convenient use, run `npm link` from this checkout. Then use:
 
 ```sh
-collection-from-images build '/path/to/photos' -o './output/my-collection'
+collection-from-images-using3rdpartyai build '/path/to/photos' -o './output/my-collection'
 ```
+
+The original `collection-from-images` command remains available as a compatibility alias. `npm start`, `npm run dev` and the executable script path continue to work.
 
 Quick mode defaults to `gpt-4.1-mini`. Use `--model` to select a different vision model available to your API project. Detailed mode uses the research model for recognition; its inherited default is `gpt-6.1-terra`. `--research-model` overrides that model. Model access depends on your provider account.
 
@@ -211,10 +219,10 @@ Use your MCP client's server configuration, with absolute paths:
 ```json
 {
   "mcpServers": {
-    "collection-from-images": {
+    "collection-from-images-using3rdpartyai": {
       "command": "node",
       "args": [
-        "/absolute/path/CollectionFromImages/bin/collection-from-images.cjs",
+        "/absolute/path/CollectionFromImages-using3rdPartyAI/bin/collection-from-images.cjs",
         "mcp"
       ],
       "env": { "OPENAI_API_KEY": "your-api-key" }
@@ -245,7 +253,7 @@ npm test
 npm pack --dry-run
 ```
 
-`setup.sh` can be run from any working directory. Re-running it refreshes local dependencies and preserves your `.env`. For MCP to load that same file, add `--env-file=/absolute/path/CollectionFromImages/.env` to the Node argument list before the executable path, or use the client's environment settings.
+`setup.sh` can be run from any working directory. Re-running it refreshes local dependencies and preserves your `.env`. For MCP to load that same file, add `--env-file=/absolute/path/CollectionFromImages-using3rdPartyAI/.env` to the Node argument list before the executable path, or use the client's environment settings.
 
 The offline suite exercises the real CLI, stdio MCP subprocess, HEIC conversion, workbook/image readback, mocked provider requests, citations, valuation rules, cancellation, corrupt input, source changes, configurable attributes, custom collection types and resume behavior. It does not call paid APIs or establish recognition accuracy. GitHub Actions runs the suite on macOS, Windows and Linux with Node 22 and 24.
 
