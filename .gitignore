@@ -1,3 +1,8 @@
+# Author: rgbohner (with Codex assistance)
+# Date: 2026-11-20
+# Used for: Excludes credentials, dependencies, caches and generated collection data from Git.
+# Why: Prevents accidental publication of local secrets and personal collections.
+
 node_modules/
 .env
 .env.*

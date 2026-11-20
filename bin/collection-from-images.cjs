@@ -1,4 +1,10 @@
 #!/usr/bin/env node
+/*
+ * Author: rgbohner (with Codex assistance)
+ * Date: 2026-11-20
+ * Used for: Parses CLI commands and runs build, export or stdio MCP mode.
+ * Why: Provides one executable entry point with consistent cancellation and exit codes.
+ */
 "use strict";
 
 const { parseArgs } = require("node:util");
@@ -33,6 +39,7 @@ Build options:
 
 Set OPENAI_API_KEY or GEMINI_API_KEY in the environment. Images are sent to
 the selected provider unless --offline is used. Research makes paid web calls.
+Attributes: edit config/collection-types.json beside the app (see README).
 Outputs: collection.xlsx, collection.csv, collection.json, and .images/.
 Exit codes: 0 complete, 1 invalid request/fatal error, 2 partial, 130 interrupted.
 `;

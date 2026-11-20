@@ -1,3 +1,9 @@
+/*
+ * Author: rgbohner (with Codex assistance)
+ * Date: 2026-11-20
+ * Used for: Tests recognition normalization, citation handling, valuation rules and provider settings.
+ * Why: Protects evidence handling and conservative interpretation with deterministic provider fixtures.
+ */
 "use strict";
 const test = require("node:test");
 const assert = require("node:assert/strict");

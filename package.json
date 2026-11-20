@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Build a collection spreadsheet from a directory of photographs.",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "engines": {
     "node": ">=22"
   },
@@ -14,9 +14,12 @@
   "files": [
     "bin/",
     "lib/",
+    "config/",
     "examples/",
     "README.md",
-    "NOTICE.md"
+    "NOTICE.md",
+    "FILE_GUIDE.md",
+    "LICENSE"
   ],
   "scripts": {
     "start": "node bin/collection-from-images.cjs",

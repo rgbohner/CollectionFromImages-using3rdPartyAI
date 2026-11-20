@@ -1,3 +1,10 @@
+<!--
+Author: rgbohner (with Codex assistance)
+Date: 2026-11-20
+Used for: Explains installation, API keys, customization, CLI/MCP use, review, resume and development.
+Why: Lets a new user operate and customize the standalone app without its original application.
+-->
+
 # CollectionFromImages
 
 Turn a directory of collectible photographs into an Excel workbook, CSV and editable JSON. Run it as a command-line app or an optional local MCP server. No desktop app, Google account, cloud storage, or running web server is required.
@@ -75,16 +82,77 @@ npm start -- build './examples' --offline -o './output/demo'
 
 Offline mode uses filenames as item names and marks every item for review. It does **not** identify objects.
 
+## Customize collection attributes
+
+Edit [`config/collection-types.json`](config/collection-types.json) in this checkout. This is the shared source for recognition, optional catalog research, aliases, value types and spreadsheet column order. The CLI and MCP server read it at the start of each build or export; a new MCP call sees edits without restarting the server. A running build keeps its original snapshot.
+
+The `comic` entry includes **Series, Publisher, Publication date, Author, Issue number**, plus Publication year, Variant / edition, Artist and Certification number. `Writer` is an alias for `Author`, and `Date`/`Cover date` are aliases for `Publication date`.
+
+Each entry under `types` has a display `label` and an ordered `attributes` array. For example, you can replace `types.comic` with this smaller definition:
+
+```json
+{
+  "label": "Comic books",
+  "attributes": [
+    { "label": "Series", "type": "text", "required": true },
+    { "label": "Publisher", "type": "text" },
+    {
+      "label": "Publication date",
+      "type": "text",
+      "aliases": ["Date", "Cover date"],
+      "description": "Keep the printed month/year; never invent a day."
+    },
+    { "label": "Author", "type": "text", "aliases": ["Writer"] },
+    {
+      "label": "Issue number",
+      "type": "text",
+      "aliases": ["Issue"],
+      "required": true
+    }
+  ]
+}
+```
+
+Keep the surrounding `version: 1` and `types` object. Add another attribute object to request a new field, reorder the array to move columns, or add a new type such as `stamps`. Keep the `items` type for miscellaneous and unidentified objects. Type IDs use lowercase letters, digits, underscores or hyphens and must start with a letter.
+
+| Attribute property | Meaning                                                                                                                     |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| `label`            | Canonical spreadsheet label and name requested from the model                                                               |
+| `type`             | `text`, `number`, `date`, `boolean` or `url`; required on each attribute                                                    |
+| `aliases`          | Optional alternative labels that map to the canonical label                                                                 |
+| `description`      | Optional short instructions explaining what evidence to extract                                                             |
+| `required`         | Optional boolean; missing visible evidence marks identification for review, and missing sourced research remains unresolved |
+
+Use **`text` for issue numbers, serial numbers and partial dates** so `007` and `June 1984` retain their meaning. `number` and `boolean` produce typed Excel cells. `date` requires a complete `YYYY-MM-DD` date and is exported as ISO text. `url` accepts HTTP(S) links. Attribute descriptions guide extraction, but cannot supply evidence: unreadable or unsupported facts stay blank, and ownership, purchase costs, grades and authenticity are not inferred.
+
+The configuration supports up to 30 types and 40 attributes per type. Labels and aliases must be unique within a type (ignoring case, spaces, underscores and hyphens). JSON does not support comments or trailing commas. Invalid settings stop the build before any AI request. Check syntax and validation without API calls:
+
+```sh
+node -e 'require("./lib/collection-types.cjs").loadCollectionTypes(); console.log("Configuration is valid")'
+```
+
+For each type present in the inventory, all configured attributes become `Observed: ...` columns, including blank ones. Mixed collections use type order from the JSON and then attribute order; matching labels share a column. `Researched: ...` columns appear when catalog research is enabled or saved research exists. Additional saved fields are retained after configured columns in alphabetical order. Removing a configured attribute does not delete already captured evidence.
+
+After changing attributes, start a build in a new output directory to extract them from images. To change only an existing spreadsheet's columns and aliases without new AI requests, run:
+
+```sh
+npm start -- export './output/my-collection/collection.json'
+```
+
+Export uses the current configuration and leaves the saved JSON unchanged. New columns remain blank until you add evidence or run a new build. Existing values that cannot convert to a changed type remain as text with a warning. If renaming a label, keep its old name in `aliases` so saved fields map to the new column.
+
+Resume requires the same configuration snapshot used by the original build; restore it or use a new output directory after an edit. Collections created before this configuration feature can still be exported, but require a new build to perform more recognition. The config belongs beside the app's `lib` directory, regardless of your current working directory. It is included in `npm pack` installations too.
+
 ## Outputs and review
 
 Each output directory contains:
 
-| File | Contents |
-| --- | --- |
+| File              | Contents                                                                                                                       |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `collection.xlsx` | Collection table with embedded object thumbnails, photo processing log, run information, and optional research/comparable tabs |
-| `collection.csv` | Collection table for Excel, Google Sheets or other spreadsheet apps; no embedded images |
-| `collection.json` | Full editable inventory, source evidence, research, usage and resumable progress |
-| `.images/` | Normalized JPEG previews used by exports and research |
+| `collection.csv`  | Collection table for Excel, Google Sheets or other spreadsheet apps; no embedded images                                        |
+| `collection.json` | Full editable inventory, source evidence, research, usage and resumable progress                                               |
+| `.images/`        | Normalized JPEG previews used by exports and research                                                                          |
 
 Review the identification, visible evidence, unresolved fields and possible duplicate IDs. “Ready for review” is model confidence, not human approval. Catalog fields preserve leading zeros and partial dates such as `June 1984`. Observed fields and researched fields have separate columns. Photos with no identified object remain as unidentified rows; failed files are listed in the Photos tab. Multiple physical objects in one photograph become separate rows. Matching titles alone never combine copies.
 
@@ -145,7 +213,10 @@ Use your MCP client's server configuration, with absolute paths:
   "mcpServers": {
     "collection-from-images": {
       "command": "node",
-      "args": ["/absolute/path/CollectionFromImages/bin/collection-from-images.cjs", "mcp"],
+      "args": [
+        "/absolute/path/CollectionFromImages/bin/collection-from-images.cjs",
+        "mcp"
+      ],
       "env": { "OPENAI_API_KEY": "your-api-key" }
     }
   }
@@ -176,8 +247,14 @@ npm pack --dry-run
 
 `setup.sh` can be run from any working directory. Re-running it refreshes local dependencies and preserves your `.env`. For MCP to load that same file, add `--env-file=/absolute/path/CollectionFromImages/.env` to the Node argument list before the executable path, or use the client's environment settings.
 
-The offline suite exercises the real CLI, stdio MCP subprocess, HEIC conversion, workbook/image readback, mocked provider requests, citations, valuation rules, cancellation, corrupt input, source changes and resume behavior. It does not call paid APIs or establish recognition accuracy. GitHub Actions runs the suite on macOS, Windows and Linux with Node 22 and 24.
+The offline suite exercises the real CLI, stdio MCP subprocess, HEIC conversion, workbook/image readback, mocked provider requests, citations, valuation rules, cancellation, corrupt input, source changes, configurable attributes, custom collection types and resume behavior. It does not call paid APIs or establish recognition accuracy. GitHub Actions runs the suite on macOS, Windows and Linux with Node 22 and 24.
 
-`lib/photo-recognition.cjs` and its provider/research helpers handle recognition and research. `lib/catalog.cjs` contains only the catalog normalization they need. Directory scanning, progress files, CLI, exports and the photo-specific MCP interface are standalone. See [NOTICE.md](NOTICE.md) for provenance.
+`lib/photo-recognition.cjs` and its provider/research helpers handle recognition and research. `config/collection-types.json` defines the editable collection attributes, `lib/collection-types.cjs` loads and validates them, and `lib/catalog.cjs` normalizes observed values. Directory scanning, progress files, CLI, exports and the photo-specific MCP interface are standalone. See [NOTICE.md](NOTICE.md) for provenance.
 
 Keep personal photographs outside the checkout. `.env`, common credential files and generated collection outputs are ignored by Git. Before sharing a generated workbook or JSON, review its photographs, source filenames, original directory path and research content; exports contain your collection data.
+
+See [FILE_GUIDE.md](FILE_GUIDE.md) for every project file's author, documentation date, purpose and rationale. Source and supporting text files also carry local headers; JSON, generated and binary files use the guide to preserve their formats. Dates describe the header documentation date, not the original creation date of adapted code.
+
+## License
+
+This project uses the [MIT license](LICENSE). You may use, modify and redistribute it, including commercially, while retaining its copyright and permission notice. It is provided without warranty. See the [Open Source Initiative MIT license](https://opensource.org/license/mit) for the standard terms. Dependencies retain their own licenses; see [NOTICE.md](NOTICE.md).

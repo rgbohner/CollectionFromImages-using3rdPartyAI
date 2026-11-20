@@ -1,0 +1,319 @@
+{
+  "version": 1,
+  "types": {
+    "empty": {
+      "label": "Empty",
+      "attributes": []
+    },
+    "coin": {
+      "label": "Coins",
+      "attributes": [
+        {
+          "label": "Country",
+          "type": "text"
+        },
+        {
+          "label": "Year",
+          "type": "number"
+        },
+        {
+          "label": "Denomination",
+          "type": "text"
+        },
+        {
+          "label": "Mint mark",
+          "type": "text"
+        },
+        {
+          "label": "Metal",
+          "type": "text"
+        },
+        {
+          "label": "Certification number",
+          "type": "text"
+        },
+        {
+          "label": "Weight (g)",
+          "type": "number",
+          "aliases": ["Weight"]
+        },
+        {
+          "label": "Diameter (mm)",
+          "type": "number"
+        },
+        {
+          "label": "Fineness",
+          "type": "number"
+        },
+        {
+          "label": "Mintage",
+          "type": "number"
+        }
+      ]
+    },
+    "comic": {
+      "label": "Comic books",
+      "attributes": [
+        {
+          "label": "Series",
+          "type": "text",
+          "aliases": ["Comic series"],
+          "required": true
+        },
+        {
+          "label": "Publisher",
+          "type": "text"
+        },
+        {
+          "label": "Publication date",
+          "type": "text",
+          "aliases": ["Date", "Cover date", "Issue date"],
+          "description": "Preserve the printed date, including month/year or year-only precision; never invent a day."
+        },
+        {
+          "label": "Author",
+          "type": "text",
+          "aliases": ["Writer", "Writers"],
+          "description": "The credited writer or author; distinguish from the artist. Only extract visible credits during recognition."
+        },
+        {
+          "label": "Issue number",
+          "type": "text",
+          "aliases": ["Issue", "Number"],
+          "required": true,
+          "description": "Keep leading zeros, suffixes and special issue identifiers as printed."
+        },
+        {
+          "label": "Publication year",
+          "type": "number"
+        },
+        {
+          "label": "Variant / edition",
+          "type": "text",
+          "aliases": ["Variant", "Edition"]
+        },
+        {
+          "label": "Artist",
+          "type": "text"
+        },
+        {
+          "label": "Certification number",
+          "type": "text"
+        }
+      ]
+    },
+    "magazines": {
+      "label": "Magazines",
+      "attributes": [
+        {
+          "label": "Publication",
+          "type": "text",
+          "aliases": ["Magazine", "Magazine name", "Publication name"],
+          "required": true
+        },
+        {
+          "label": "Issue",
+          "type": "text",
+          "aliases": ["Issue number", "Number"],
+          "required": true
+        },
+        {
+          "label": "Publisher",
+          "type": "text",
+          "aliases": ["Publisher credits"]
+        },
+        {
+          "label": "Publication date",
+          "type": "text",
+          "aliases": ["Date", "Issue date", "Cover date"],
+          "required": true,
+          "description": "Preserve the printed date, including month/year or year-only precision; never invent a day."
+        },
+        {
+          "label": "Edition",
+          "type": "text",
+          "aliases": ["Cataloged edition"]
+        },
+        {
+          "label": "Language",
+          "type": "text"
+        },
+        {
+          "label": "Country",
+          "type": "text"
+        },
+        {
+          "label": "Cover subject",
+          "type": "text",
+          "aliases": ["Cover", "Cover feature", "Cover story", "Featured game"]
+        },
+        {
+          "label": "Page count",
+          "type": "number",
+          "aliases": [
+            "Pages",
+            "Extent",
+            "Cataloged extent",
+            "Cataloged length",
+            "Length"
+          ]
+        },
+        {
+          "label": "Cover artist",
+          "type": "text",
+          "aliases": ["Artist", "Artwork artist"]
+        },
+        {
+          "label": "Cover headline",
+          "type": "text"
+        },
+        {
+          "label": "Catalog identifier",
+          "type": "text",
+          "aliases": [
+            "Archive identifier",
+            "Library identifier",
+            "Library catalog identifier"
+          ]
+        }
+      ]
+    },
+    "watch": {
+      "label": "Watches",
+      "attributes": [
+        {
+          "label": "Brand",
+          "type": "text"
+        },
+        {
+          "label": "Model",
+          "type": "text"
+        },
+        {
+          "label": "Reference",
+          "type": "text",
+          "aliases": ["Reference number"]
+        },
+        {
+          "label": "Case width (mm)",
+          "type": "number",
+          "aliases": [
+            "Case diameter",
+            "Case diameter (mm)",
+            "Case width",
+            "Case size"
+          ]
+        },
+        {
+          "label": "Thickness (mm)",
+          "type": "number"
+        },
+        {
+          "label": "Lug-to-lug (mm)",
+          "type": "number",
+          "aliases": ["Lug to lug"]
+        },
+        {
+          "label": "Lug width (mm)",
+          "type": "number",
+          "aliases": ["Lug width"]
+        },
+        {
+          "label": "Case material",
+          "type": "text"
+        },
+        {
+          "label": "Movement",
+          "type": "text"
+        },
+        {
+          "label": "Dial",
+          "type": "text"
+        },
+        {
+          "label": "Power reserve (hours)",
+          "type": "number"
+        },
+        {
+          "label": "Water resistance (m)",
+          "type": "number"
+        }
+      ]
+    },
+    "cards": {
+      "label": "Cards",
+      "attributes": [
+        {
+          "label": "Game",
+          "type": "text",
+          "description": "Use Pokémon when a recognizable Pokémon card layout is visible."
+        },
+        {
+          "label": "Language",
+          "type": "text"
+        },
+        {
+          "label": "Printing",
+          "type": "text"
+        },
+        {
+          "label": "Collector number",
+          "type": "text"
+        },
+        {
+          "label": "Set",
+          "type": "text"
+        },
+        {
+          "label": "Card number",
+          "type": "text"
+        },
+        {
+          "label": "Year",
+          "type": "number"
+        },
+        {
+          "label": "Player / character",
+          "type": "text"
+        },
+        {
+          "label": "Manufacturer",
+          "type": "text"
+        },
+        {
+          "label": "Rarity",
+          "type": "text"
+        },
+        {
+          "label": "Condition",
+          "type": "text"
+        }
+      ]
+    },
+    "items": {
+      "label": "Items",
+      "attributes": [
+        {
+          "label": "Maker",
+          "type": "text"
+        },
+        {
+          "label": "Category",
+          "type": "text"
+        },
+        {
+          "label": "Year",
+          "type": "number"
+        },
+        {
+          "label": "Material",
+          "type": "text"
+        },
+        {
+          "label": "Condition",
+          "type": "text"
+        }
+      ]
+    }
+  }
+}

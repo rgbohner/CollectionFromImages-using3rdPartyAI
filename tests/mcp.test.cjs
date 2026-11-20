@@ -1,3 +1,9 @@
+/*
+ * Author: rgbohner (with Codex assistance)
+ * Date: 2026-11-20
+ * Used for: Tests MCP negotiation, argument validation, streaming, cancellation and an actual stdio subprocess.
+ * Why: Ensures MCP clients can reliably invoke the same standalone workflow.
+ */
 "use strict";
 const test = require("node:test");
 const assert = require("node:assert/strict");

@@ -1,3 +1,8 @@
+# Author: rgbohner (with Codex assistance)
+# Date: 2026-11-20
+# Used for: Defines repository text and line-ending behavior.
+# Why: Keeps shell scripts and source files portable across operating systems.
+
 *.sh text eol=lf
 *.cjs text eol=lf
 *.heic binary

@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# Author: rgbohner (with Codex assistance)
+# Date: 2026-11-20
+# Used for: Checks prerequisites, installs locked dependencies, creates a private local environment file and runs tests.
+# Why: Provides a repeatable development setup while preserving an existing API-key file.
+
 # Run from anywhere: /path/to/CollectionFromImages/setup.sh
 set -euo pipefail
 

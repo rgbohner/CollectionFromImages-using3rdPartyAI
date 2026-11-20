@@ -1,3 +1,9 @@
+/*
+ * Author: rgbohner (with Codex assistance)
+ * Date: 2026-11-20
+ * Used for: Tests the image-to-spreadsheet pipeline, state handling, CLI and image processing.
+ * Why: Checks real file and workbook behavior without paid API requests or personal data.
+ */
 "use strict";
 
 const test = require("node:test");
@@ -100,7 +106,11 @@ test("folder -> actual AI transport -> workbook, CSV and evidence JSON; resume s
   assert.equal(sheet.getImages().length, 2);
   assert.equal(sheet.getCell("C2").value, "=1+1");
   assert.equal(sheet.getCell("C2").type, ExcelJS.ValueType.String);
-  assert.equal(sheet.getCell("J2").value, "001");
+  assert.equal(
+    sheet.getCell(2, sheet.getRow(1).values.indexOf("Observed: Serial number"))
+      .value,
+    "001",
+  );
   assert.equal(sheet.views[0].ySplit, 1);
   assert.match(await fs.readFile(result.csv, "utf8"), /"'=1\+1"/);
   assert.equal(workbook.getWorksheet("Photos").rowCount, 3);

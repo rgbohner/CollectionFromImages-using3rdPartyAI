@@ -1,3 +1,8 @@
+# Author: rgbohner (with Codex assistance)
+# Date: 2026-11-20
+# Used for: Runs tests and development setup checks on supported Node versions and operating systems.
+# Why: Detects portability and packaging regressions before sharing the app.
+
 name: Test
 on:
   push:
