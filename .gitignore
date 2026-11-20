@@ -29,3 +29,6 @@ collection.xlsx
 collection.csv
 /photos/
 /images/
+
+# Downloaded sample collections and their private provenance manifest.
+/sample-data/

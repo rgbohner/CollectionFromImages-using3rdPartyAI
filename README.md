@@ -90,6 +90,71 @@ npm start -- build './examples' --offline -o './output/demo'
 
 Offline mode uses filenames as item names and marks every item for review. It does **not** identify objects.
 
+## Sample collections
+
+Three portable run files are provided for local sample collections. They work on
+macOS, Linux and Windows with Node.js 22+. Put the downloaded images in these
+directories under your checkout, retaining any subdirectories:
+
+| Collection | Local image directory | Run file | npm shortcut |
+| --- | --- | --- | --- |
+| Coins | `sample-data/coins/` | [`examples/run-coins.cjs`](examples/run-coins.cjs) | `npm run sample:coins` |
+| MSG (HEIC photos; includes trading cards) | `sample-data/msg/` | [`examples/run-msg.cjs`](examples/run-msg.cjs) | `npm run sample:msg` |
+| Comics | `sample-data/comics/` | [`examples/run-comics.cjs`](examples/run-comics.cjs) | `npm run sample:comics` |
+
+The photos and their private Drive links are **not distributed with this public
+repository or npm package**. Use your own images or obtain the sample folders
+separately from their owner. Download each folder from Drive, extract its contents
+into the matching directory above, and ensure image filenames have a supported
+extension. `sample-data/` is Git-ignored and excluded from the package; keep local
+download manifests there too. The app itself requires no Google credentials.
+The code's MIT license does not grant rights to third-party collection photographs
+or the works depicted in them.
+
+After `./setup.sh` (or `npm ci`), validate all three collections without API keys:
+
+```sh
+npm run sample:coins
+npm run sample:msg
+npm run sample:comics
+```
+
+These commands default to **offline** mode: they decode every image, generate
+thumbnails, and write filename-based XLSX, CSV and JSON inventories. They do not
+perform identification. Outputs go to `output/samples/coins-offline/`,
+`output/samples/msg-offline/`, and `output/samples/comics-offline/` respectively.
+The scripts resolve input and default output paths relative to the checkout, so
+you can also invoke an absolute run-file path from another working directory.
+
+For real identification, add your own key to the checkout's `.env` file or process
+environment, then explicitly select a provider. These commands send images to
+that third-party service and incur its API charges:
+
+```sh
+# Start with three photos in a separate trial directory.
+npm run sample:comics -- openai --limit 3 --output ./output/comics-trial
+npm run sample:msg -- gemini --limit 3 --output ./output/cards-trial
+
+# Process an entire collection with OpenAI.
+npm run sample:coins -- openai
+```
+
+Only AI modes load `.env`; existing process environment values take precedence.
+Provider-specific outputs default to `output/samples/<collection>-openai/` or
+`output/samples/<collection>-gemini/`. Quick recognition and no web research are
+the defaults. Use `--model` to select a supported model, or pass other build
+options after the mode. Collection types are inferred from the photographs and
+use [`config/collection-types.json`](config/collection-types.json), including the
+configured comic and trading-card attributes.
+
+Existing results are protected from overwriting. To resume, repeat the same mode,
+options, image set and configuration with `--resume` (for example,
+`npm run sample:coins -- offline --resume`). A limited trial cannot be resumed as
+a full run; use a different output directory when changing the limit or settings.
+An explicit relative `--output` is relative to your current working directory.
+Run `node examples/run-comics.cjs --help` for the wrapper usage, or the main CLI's
+`--help` for all build options.
+
 ## Customize collection attributes
 
 Edit [`config/collection-types.json`](config/collection-types.json) in this checkout. This is the shared source for recognition, optional catalog research, aliases, value types and spreadsheet column order. The CLI and MCP server read it at the start of each build or export; a new MCP call sees edits without restarting the server. A running build keeps its original snapshot.

@@ -26,6 +26,9 @@
     "start": "node bin/collection-from-images.cjs",
     "dev": "node --env-file=.env bin/collection-from-images.cjs",
     "test": "node --test tests/*.test.cjs",
+    "sample:coins": "node examples/run-coins.cjs",
+    "sample:msg": "node examples/run-msg.cjs",
+    "sample:comics": "node examples/run-comics.cjs",
     "mcp": "node bin/collection-from-images.cjs mcp"
   },
   "dependencies": {
